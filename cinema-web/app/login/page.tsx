@@ -1,212 +1,234 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+// app/login/page.tsx
+// Next.js (App Router) + Tailwind CSS — black glass login page
+
+import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-const ROLES = ["Viewer", "Critic", "Studio"] as const;
-type Role = (typeof ROLES)[number];
+type FormState = {
+  email: string;
+  password: string;
+  remember: boolean;
+};
 
-type Errors = { email?: string; password?: string };
+type Errors = Partial<Record<keyof FormState | "form", string>>;
 
-/* Repeated class lists live in constants so the JSX stays readable. */
-const labelClass =
-  "mb-2 block text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-slate-400";
+const initialForm: FormState = {
+  email: "",
+  password: "",
+  remember: false,
+};
 
-const inputClass =
-  "w-full rounded-2xl border border-white/10 bg-black/35 px-[18px] py-[15px] text-stone-100 outline-none transition " +
-  "placeholder:text-slate-600 " +
-  "focus:border-amber-neon focus:bg-black/50 focus:shadow-[0_0_0_3px_rgb(255_176_32/0.14),0_0_24px_rgb(255_176_32/0.45)] " +
-  "aria-invalid:border-crimson-neon aria-invalid:shadow-[0_0_0_3px_rgb(255_45_85/0.14)]";
-
-const errorClass = "mt-2 text-sm text-crimson-neon";
-
-const socialClass =
-  "rounded-full border border-white/10 bg-white/[0.03] py-3 text-sm font-semibold tracking-wide transition " +
-  "hover:border-amber-neon/50 hover:bg-amber-neon/5 active:scale-95";
-
-export default function LoginForm() {
-  const [role, setRole] = useState<Role>("Viewer");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [remember, setRemember] = useState(true);
+export default function LoginPage() {
+  const router = useRouter();
+  const [form, setForm] = useState<FormState>(initialForm);
   const [errors, setErrors] = useState<Errors>({});
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
 
-  function validate(): Errors {
-    const next: Errors = {};
-    if (!/^\S+@\S+\.\S+$/.test(email)) next.email = "Enter a valid email address.";
-    if (password.length < 8) next.password = "Password must be at least 8 characters.";
-    return next;
-  }
+  const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+    setErrors((prev) => ({ ...prev, [key]: undefined, form: undefined }));
+  };
 
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setMessage(null);
+  const validate = (): Errors => {
+    const e: Errors = {};
+    if (!/^\S+@\S+\.\S+$/.test(form.email)) e.email = "Enter a valid email address";
+    if (form.password.length < 1) e.password = "Enter your password";
+    return e;
+  };
 
-    const found = validate();
-    setErrors(found);
-    if (Object.keys(found).length > 0) return;
+  const handleSubmit = async (ev: FormEvent) => {
+    ev.preventDefault();
+    const e = validate();
+    setErrors(e);
+    if (Object.keys(e).length > 0) return;
 
     setLoading(true);
     try {
-      // TODO: replace with your real Laravel call, e.g.
-      // await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, { method: "POST", ... })
+      // TODO: replace with your real API route, e.g. /api/auth/login
+      // const res = await fetch("/api/auth/login", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(form),
+      // });
+      // if (!res.ok) throw new Error("Invalid email or password");
       await new Promise((r) => setTimeout(r, 1200));
-      setMessage(`Welcome back. The ${role.toLowerCase()} lounge is open.`);
-    } catch {
-      setMessage("Something went wrong. Please try again.");
+
+      router.push("/"); // redirect after login
+    } catch (err) {
+      setErrors({
+        form: err instanceof Error ? err.message : "Something went wrong. Try again.",
+      });
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
-    <form
-      onSubmit={onSubmit}
-      noValidate
-      className="w-full max-w-[440px] animate-rise rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-[0_30px_80px_rgb(0_0_0/0.55),inset_0_1px_0_rgb(255_255_255/0.08)] backdrop-blur-xl backdrop-saturate-150 motion-reduce:animate-none sm:p-10"
-    >
-      <h1 className="font-display text-5xl uppercase leading-none tracking-wide">
-        Sign in
-      </h1>
-      <p className="mb-6 mt-2 text-sm text-slate-400">
-        Step back into your private screening room.
-      </p>
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-4 py-10">
+      {/* Background glow orbs */}
+      <div className="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-red-600/20 blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-40 -right-24 h-[28rem] w-[28rem] rounded-full bg-indigo-500/20 blur-[140px]" />
+      <div className="pointer-events-none absolute left-1/2 top-1/3 h-72 w-72 -translate-x-1/2 rounded-full bg-fuchsia-500/10 blur-[120px]" />
 
-      {/* Pill selector */}
+      {/* Subtle grid texture */}
       <div
-        role="radiogroup"
-        aria-label="Account type"
-        className="mb-5 grid grid-cols-3 gap-1.5 rounded-full border border-white/10 bg-black/35 p-1.5"
-      >
-        {ROLES.map((r) => (
-          <button
-            key={r}
-            type="button"
-            role="radio"
-            aria-checked={role === r}
-            onClick={() => setRole(r)}
-            className="rounded-full py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 transition hover:text-stone-100 active:scale-95 aria-checked:bg-linear-to-br aria-checked:from-amber-neon aria-checked:to-orange-500 aria-checked:text-[#1a1208] aria-checked:shadow-glow-amber"
-          >
-            {r}
-          </button>
-        ))}
-      </div>
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)",
+          backgroundSize: "48px 48px",
+        }}
+      />
 
-      {message && (
-        <div
-          role="status"
-          className="mb-4 animate-rise rounded-2xl border border-amber-neon/40 bg-amber-neon/10 px-4 py-3 text-sm text-amber-neon"
-        >
-          {message}
-        </div>
-      )}
+      {/* Glass card */}
+      <section className="relative z-10 w-full max-w-md rounded-3xl border border-white/10 bg-white/[0.04] p-8 shadow-[0_8px_60px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl sm:p-10">
+        {/* Top highlight line */}
+        <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
 
-      <div className="mb-4">
-        <label htmlFor="email" className={labelClass}>
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="email"
-          placeholder="you@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          aria-invalid={!!errors.email}
-          aria-describedby={errors.email ? "email-err" : undefined}
-          className={inputClass}
-        />
-        {errors.email && (
-          <p id="email-err" className={errorClass}>
-            {errors.email}
+        {/* Brand */}
+        <header className="mb-8 text-center">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/15 bg-white/[0.06] shadow-inner backdrop-blur-md">
+            <span className="text-2xl">🎬</span>
+          </div>
+          <h1 className="text-2xl font-semibold tracking-tight text-white">Welcome back</h1>
+          <p className="mt-1.5 text-sm text-white/50">
+            Sign in to book your next movie night.
           </p>
-        )}
-      </div>
+        </header>
 
-      <div className="mb-4">
-        <label htmlFor="password" className={labelClass}>
-          Password
-        </label>
-        <div className="relative">
-          <input
-            id="password"
-            type={showPassword ? "text" : "password"}
-            autoComplete="current-password"
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            aria-invalid={!!errors.password}
-            aria-describedby={errors.password ? "pw-err" : undefined}
-            className={`${inputClass} pr-[72px]`}
-          />
+        <form onSubmit={handleSubmit} noValidate className="space-y-4">
+          {errors.form && (
+            <div
+              role="alert"
+              className="rounded-xl border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-300"
+            >
+              {errors.form}
+            </div>
+          )}
+
+          <Field label="Email" error={errors.email}>
+            <input
+              type="email"
+              autoComplete="email"
+              placeholder="you@example.com"
+              value={form.email}
+              onChange={(e) => update("email", e.target.value)}
+              className={inputClass(!!errors.email)}
+            />
+          </Field>
+
+          <Field label="Password" error={errors.password}>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                placeholder="••••••••"
+                value={form.password}
+                onChange={(e) => update("password", e.target.value)}
+                className={inputClass(!!errors.password) + " pr-16"}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((s) => !s)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-white/50 transition hover:text-white"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+          </Field>
+
+          <div className="flex items-center justify-between">
+            <label className="flex cursor-pointer items-center gap-2.5 text-sm text-white/60">
+              <input
+                type="checkbox"
+                checked={form.remember}
+                onChange={(e) => update("remember", e.target.checked)}
+                className="h-4 w-4 shrink-0 rounded border-white/20 bg-white/10 accent-red-500"
+              />
+              Remember me
+            </label>
+            <Link
+              href="/forgot-password"
+              className="text-sm text-white/60 transition hover:text-white hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="group relative mt-2 w-full overflow-hidden rounded-xl bg-gradient-to-b from-white to-neutral-300 py-3 text-sm font-semibold text-black shadow-[0_0_30px_rgba(255,255,255,0.15)] transition hover:shadow-[0_0_40px_rgba(255,255,255,0.28)] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {loading ? (
+              <span className="inline-flex items-center gap-2">
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-black/30 border-t-black" />
+                Signing in…
+              </span>
+            ) : (
+              "Sign in"
+            )}
+          </button>
+
+          <div className="flex items-center gap-3 py-1">
+            <span className="h-px flex-1 bg-white/10" />
+            <span className="text-xs text-white/30">or</span>
+            <span className="h-px flex-1 bg-white/10" />
+          </div>
+
           <button
             type="button"
-            onClick={() => setShowPassword((s) => !s)}
-            aria-pressed={showPassword}
-            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full px-3 py-2 text-[0.72rem] font-semibold uppercase tracking-widest text-slate-400 transition hover:text-amber-neon"
+            className="w-full rounded-xl border border-white/10 bg-white/[0.04] py-3 text-sm font-medium text-white/80 backdrop-blur-md transition hover:bg-white/[0.08]"
           >
-            {showPassword ? "Hide" : "Show"}
+            Continue with Google
           </button>
-        </div>
-        {errors.password && (
-          <p id="pw-err" className={errorClass}>
-            {errors.password}
+
+          <p className="pt-2 text-center text-sm text-white/50">
+            New here?{" "}
+            <Link href="/register" className="font-medium text-white hover:underline">
+              Create an account
+            </Link>
           </p>
-        )}
-      </div>
-
-      <div className="mb-5 mt-1 flex items-center justify-between text-sm text-slate-400">
-        <label className="inline-flex cursor-pointer select-none items-center gap-2">
-          <input
-            type="checkbox"
-            checked={remember}
-            onChange={(e) => setRemember(e.target.checked)}
-            className="size-[18px] cursor-pointer accent-amber-neon"
-          />
-          Keep me signed in
-        </label>
-        <a
-          href="#"
-          className="text-amber-neon transition hover:[text-shadow:0_0_24px_rgb(255_176_32/0.45)]"
-        >
-          Forgot password?
-        </a>
-      </div>
-
-      <button
-        type="submit"
-        disabled={loading}
-        className="group relative w-full overflow-hidden rounded-full bg-linear-to-r from-crimson-neon via-orange-500 to-amber-neon py-4 text-sm font-bold uppercase tracking-[0.22em] text-white shadow-glow-crimson transition hover:-translate-y-0.5 hover:shadow-[0_0_40px_rgb(255_45_85/0.6)] active:scale-[0.98] disabled:cursor-progress disabled:opacity-60"
-      >
-        <span className="relative z-10">{loading ? "Rolling…" : "Take your seat"}</span>
-        <span
-          aria-hidden="true"
-          className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/35 to-transparent transition-transform duration-700 group-hover:translate-x-full group-disabled:hidden"
-        />
-      </button>
-
-      <div className="my-6 flex items-center gap-3.5 text-[0.7rem] uppercase tracking-[0.2em] text-slate-600 before:h-px before:flex-1 before:bg-white/10 after:h-px after:flex-1 after:bg-white/10">
-        or continue with
-      </div>
-
-      <div className="grid grid-cols-2 gap-2.5">
-        <button type="button" className={socialClass}>
-          Google
-        </button>
-        <button type="button" className={socialClass}>
-          Apple
-        </button>
-      </div>
-
-      <p className="mt-6 text-center text-sm text-slate-400">
-        New to the cinema?{" "}
-        <Link href="/register" className="text-amber-neon hover:underline">
-          Create an account
-        </Link>
-      </p>
-    </form>
+        </form>
+      </section>
+    </main>
   );
 }
+
+/* ---------- helpers ---------- */
+
+function inputClass(hasError: boolean) {
+  return [
+    "w-full rounded-xl border bg-white/[0.04] px-4 py-3 text-sm text-white placeholder-white/25",
+    "outline-none backdrop-blur-md transition",
+    "focus:bg-white/[0.07] focus:ring-2",
+    hasError
+      ? "border-red-400/50 focus:border-red-400/70 focus:ring-red-400/20"
+      : "border-white/10 focus:border-white/30 focus:ring-white/10",
+  ].join(" ");
+}
+
+function Field({
+  label,
+  error,
+  children,
+}: {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <label className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-white/50">
+        {label}
+      </label>
+      {children}
+      {error && <p className="mt-1.5 text-xs text-red-400">{error}</p>}
+    </div>
+  );
+}
+

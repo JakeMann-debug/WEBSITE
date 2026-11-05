@@ -232,7 +232,7 @@ export default function RegisterPage() {
             <p className="pt-2 text-center text-sm text-white/50">
               Already have an account?{" "}
               <Link href="/login" className="font-medium text-white hover:underline">
-                Sign in 
+                Sign in
               </Link>
             </p>
           </form>
