@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 
 const ROLES = ["Viewer", "Critic", "Studio"] as const;
 type Role = (typeof ROLES)[number];
@@ -202,9 +203,9 @@ export default function LoginForm() {
 
       <p className="mt-6 text-center text-sm text-slate-400">
         New to the cinema?{" "}
-        <a href="#" className="text-amber-neon hover:underline">
+        <Link href="/register" className="text-amber-neon hover:underline">
           Create an account
-        </a>
+        </Link>
       </p>
     </form>
   );
