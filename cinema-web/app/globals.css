@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 
-:root {
+/* :root {
   --bg: #0b0e17;
   --bg-2: #11151f;
   --text: #f4efe8;
@@ -12,13 +12,13 @@
   --glass-border: rgba(255, 255, 255, 0.1);
   --glow-amber: 0 0 24px rgba(255, 176, 32, 0.45);
   --glow-crimson: 0 0 24px rgba(255, 45, 85, 0.45);
-}
+} */
 
-* {
+/* * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
+} */
 
 
 

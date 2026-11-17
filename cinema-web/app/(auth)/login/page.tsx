@@ -152,7 +152,7 @@ export default function LoginPage() {
               Remember me
             </label>
             <Link
-              href="/forgot-password"
+              href="/forgot"
               className="text-sm text-white/60 transition hover:text-white hover:underline"
             >
               Forgot password?
@@ -231,4 +231,3 @@ function Field({
     </div>
   );
 }
-
