@@ -66,11 +66,11 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-4 py-10">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0c0c0e] px-4 py-10">
       {/* Background glow orbs */}
-      <div className="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-red-600/20 blur-[120px]" />
-      <div className="pointer-events-none absolute -bottom-40 -right-24 h-[28rem] w-[28rem] rounded-full bg-indigo-500/20 blur-[140px]" />
-      <div className="pointer-events-none absolute left-1/2 top-1/3 h-72 w-72 -translate-x-1/2 rounded-full bg-fuchsia-500/10 blur-[120px]" />
+      <div className="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-orange-500/15 blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-40 -right-24 h-[28rem] w-[28rem] rounded-full bg-amber-500/15 blur-[140px]" />
+      <div className="pointer-events-none absolute left-1/2 top-1/3 h-72 w-72 -translate-x-1/2 rounded-full bg-orange-600/10 blur-[120px]" />
 
       {/* Subtle grid texture */}
       <div
@@ -89,7 +89,7 @@ export default function RegisterPage() {
 
         {/* Brand */}
         <header className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/15 bg-white/[0.06] shadow-inner backdrop-blur-md">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-b from-amber-400 to-orange-500 shadow-[0_4px_20px_rgba(249,115,22,0.35)]">
             <span className="text-2xl">🎬</span>
           </div>
           <h1 className="text-2xl font-semibold tracking-tight text-white">Create your account</h1>
@@ -107,7 +107,7 @@ export default function RegisterPage() {
             </p>
             <Link
               href="/login"
-              className="mt-5 inline-block rounded-xl bg-white px-5 py-2.5 text-sm font-medium text-black transition hover:bg-white/90"
+              className="mt-5 inline-block rounded-xl bg-gradient-to-b from-amber-400 to-orange-500 px-5 py-2.5 text-sm font-semibold text-black transition hover:brightness-110"
             >
               Continue to login
             </Link>
@@ -185,7 +185,7 @@ export default function RegisterPage() {
                   type="checkbox"
                   checked={form.agree}
                   onChange={(e) => update("agree", e.target.checked)}
-                  className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/20 bg-white/10 accent-red-500"
+                  className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/20 bg-white/10 accent-orange-500"
                 />
                 <span>
                   I agree to the{" "}
@@ -204,7 +204,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative mt-2 w-full overflow-hidden rounded-xl bg-gradient-to-b from-white to-neutral-300 py-3 text-sm font-semibold text-black shadow-[0_0_30px_rgba(255,255,255,0.15)] transition hover:shadow-[0_0_40px_rgba(255,255,255,0.28)] disabled:cursor-not-allowed disabled:opacity-60"
+              className="group relative mt-2 w-full overflow-hidden rounded-xl bg-gradient-to-b from-amber-400 to-orange-500 py-3 text-sm font-semibold text-black shadow-[0_4px_20px_rgba(249,115,22,0.4)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? (
                 <span className="inline-flex items-center gap-2">
@@ -231,7 +231,7 @@ export default function RegisterPage() {
 
             <p className="pt-2 text-center text-sm text-white/50">
               Already have an account?{" "}
-              <Link href="/login" className="font-medium text-white hover:underline">
+              <Link href="/login" className="font-medium text-orange-400 hover:text-orange-300 hover:underline">
                 Sign in
               </Link>
             </p>
@@ -251,7 +251,7 @@ function inputClass(hasError: boolean) {
     "focus:bg-white/[0.07] focus:ring-2",
     hasError
       ? "border-red-400/50 focus:border-red-400/70 focus:ring-red-400/20"
-      : "border-white/10 focus:border-white/30 focus:ring-white/10",
+      : "border-white/10 focus:border-orange-400/60 focus:ring-orange-400/20",
   ].join(" ");
 }
 
