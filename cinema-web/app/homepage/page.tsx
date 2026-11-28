@@ -31,20 +31,21 @@ const CATEGORIES: Category[] = ["Movie", "Series", "Drama", "Animation", "Comedy
 
 const HERO = {
   id: 2,
-  title: "The most Beautiful Woman in the World",
+  title: "The Quiet Orbit",
   tagline: "Some silences are signals.",
   image: "/backdrops/the-quiet-orbit.jpg",
 };
 
 const POPULAR: Movie[] = [
-  { id: 1, title: "Someone Special", studio: "Sithy Studios", rating: 5, category: "Drama", poster: "/posters/someonespecial.PNG" },
-  { id: 2, title: "The most Beautiful Woman in the World", studio: "Sithy Studios", rating: 5, category: "Movie", poster: "/posters/vt.jpg" },
+  { id: 1, title: "Midnight Circuit", studio: "Neon Reel Studios", rating: 5, category: "Movie", poster: "/posters/midnight-circuit.jpg" },
+  { id: 2, title: "The Quiet Orbit", studio: "Starfield Pictures", rating: 4, category: "Movie", poster: "/posters/the-quiet-orbit.jpg" },
   { id: 3, title: "Lanterns of Kampot", studio: "Mekong Films", rating: 4, category: "Drama", poster: "/posters/lanterns-of-kampot.jpg" },
   { id: 4, title: "Cold Ledger", studio: "Gray Harbor", rating: 4, category: "Movie", poster: "/posters/cold-ledger.jpg" },
   { id: 5, title: "Paper Skies", studio: "Origami Animation", rating: 5, category: "Animation", poster: "/posters/paper-skies.jpg" },
   { id: 6, title: "Laugh Track", studio: "Backlot Comedy", rating: 3, category: "Comedy", poster: "/posters/laugh-track.jpg" },
   { id: 7, title: "Haunt Season", studio: "Dark Porch", rating: 3, category: "Series", poster: "/posters/haunt-season.jpg" },
   { id: 8, title: "Last Train to Siem Reap", studio: "Mekong Films", rating: 4, category: "Drama", poster: "/posters/last-train-to-siem-reap.jpg" },
+  { id: 9, title: "Reth Sopheavotey", studio: "John Sithy", rating: 5, category: "Drama", poster: "/posters/photo_2026-11-15_00-13-29.jpg" }
 ];
 
 const COMING_SOON: Movie[] = [

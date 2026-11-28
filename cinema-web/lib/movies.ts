@@ -194,6 +194,26 @@ export const MOVIES: Movie[] = [
     status: "now",
     trailer: "",
   },
+  {
+    id: 9,
+    slug: "reth-sopheavotey",
+    title: "Reth Sopheavotey",
+    tagline: "Love Story",
+    synopsis:
+      "When you love someone so much everying you do is remind you of them, they have been become your motivation to do everything for them, and you will never forget them, even if they are gone. This is the story of a nation, and the people who love it.",
+    genres: ["Drama"],
+    score: 8.1,
+    duration: "2h 15m",
+    ageRating: "PG-13",
+    language: "English",
+    subtitles: "English",
+    release: "28 Nov 2026",
+    studio: "John Sithy",
+    director: "John Sithy",
+    cast: ["JohnSithy"],
+    status: "now",
+    trailer: "",
+  },
   // ---- Coming soon ----
   {
     id: 21,
@@ -297,6 +317,10 @@ const SHOWTIMES: Record<number, ShowGroup[]> = {
   5: [
     { cinema: "Central Mall Cinema", format: "2D", times: ["10:30 AM", "01:00 PM", "03:45 PM"] },
     { cinema: "Nitehawk Cinema", format: "3D", times: ["11:30 AM", "02:15 PM"] },
+  ],
+  9: [
+    { cinema: "Nitehawk Cinema", format: "2D", times: ["9:30 PM", "11:30 PM"] },
+    { cinema: "Riverside Cinema", format: "2D", times: ["9:30 PM", "11:30 PM"] },
   ],
 };
 
